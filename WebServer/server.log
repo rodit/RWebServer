@@ -1,0 +1,31 @@
+[RWebServer Log]
+[INFO][Server]Initializing server...
+[INFO][Server]Loaded configuration.
+[INFO][Server]Created server context.
+[INFO][Server]Loaded permission manager.
+[INFO][Server]Loaded session manager.
+[INFO][Server]Loaded script manager.
+[INFO][Server]Loaded authentication manager.
+[INFO][Server]Loaded command manager.
+[INFO][PluginManager]Loaded plugin Test Plugin version 0.1.4.
+[INFO][Server]Loaded plugin manager.
+[INFO][TestPlugin]INIT
+[INFO][Server]Server initialized.
+[INFO][Server]Server started.
+[INFO][TestPlugin]HANDLE
+[INFO][Server]HTTP request from 127.0.0.1 for resource /login/index.rsc.
+[INFO][Server]Requesting file htdocs/login/index.rsc
+[INFO][Auth]Consulting auth file @ htdocs/login/.auth.
+[INFO][Auth]Auth file was not found. Checking parent locations...
+[INFO][Permissions]Consulting access file @ htdocs/login/.access.
+[INFO][Permissions]Access file was not found. Checking parent locations...
+[INFO][Permissions]Found parent permissions @ htdocs/.access.
+[INFO][FileUtil]Read file htdocs.
+[INFO][Permissions]Consulting access file @ htdocs/login/.access.
+[INFO][FileUtil]Read file htdocs/login.
+[INFO][FileUtil]Read file htdocs/login.
+[ERRR][MySql]Error while creating query - Invalid argument value: java.io.NotSerializableException
+[INFO][ScriptEngine]Script execution took 1207ms
+[INFO][TestPlugin]PREWRITE
+[INFO][TestPlugin]POSTWRITE
+[INFO][Server]Sent response length=189.
