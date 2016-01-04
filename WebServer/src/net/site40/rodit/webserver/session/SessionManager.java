@@ -1,5 +1,6 @@
 package net.site40.rodit.webserver.session;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -17,11 +18,17 @@ public class SessionManager {
 	private Configuration config;
 	private HashMap<String, Session> sessions;
 	private Random random;
-
+	
 	public SessionManager(Configuration config){
 		this.config = config;
 		this.sessions = new HashMap<String, Session>();
 		this.random = new Random();
+		
+		if(config.readBool("server.sessions.clear")){
+			for(File file : Session.SESSIONS_DIR.listFiles())
+				if(file.isFile())
+					file.delete();
+		}
 	}
 
 	private static final int ID_LENGTH = 32;

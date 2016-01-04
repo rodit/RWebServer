@@ -46,7 +46,7 @@ public class ScriptManager {
 		log.i("Script execution took " + (System.currentTimeMillis() - time) + "ms");
 		return replaced;
 	}
-
+	
 	public String evaluate(String script, HttpExchange cex, Server server, File requested, Log log){
 		StringWriter sw = null;
 		PrintWriter writer = null;
@@ -115,6 +115,9 @@ public class ScriptManager {
 			+ "var jString = Java.type('java.lang.String');\n"
 			+ "var mysql = Java.type('net.site40.rodit.webserver.mysql.MySql');\n"
 			+ "var mysql_obj = null;\n"
+			+ "function unset(object){\n"
+			+ "    object = null;\n"
+			+ "}\n"
 			+ "function abs(file){\n"
 			+ "    return new File(SERVER_DOCUMENTS + server.getDir(requested), file);\n"
 			+ "}\n"

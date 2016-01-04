@@ -18,19 +18,20 @@ import net.site40.rodit.webserver.util.Log;
 import com.sun.net.httpserver.HttpExchange;
 
 public class PluginManager {
-	
+
 	private Log log = new Log("PluginManager");
 	private ArrayList<IPlugin> plugins;
 
 	public PluginManager(Configuration config){
 		this.plugins = new ArrayList<IPlugin>();
 		if(config.readBool("plugins.enabled")){
-			for(String plugin : config.getValues("plugins.load")){
+			for(String plugin : new File(config.read("plugins.dir")).list()){
 				File file = new File(config.read("plugins.dir"), plugin);
 				if(!file.exists()){
 					log.i("Plugin load failed. Plugin file '" + file.getPath() + "' could not be found.");
 					continue;
 				}
+				log.i("Loading plugin " + file.getName() + ".");
 				try{
 					JarFile jarFile = new JarFile(file);
 					Enumeration<JarEntry> e = jarFile.entries();
@@ -40,6 +41,7 @@ public class PluginManager {
 					
 					String pluginClass = "";
 
+					ArrayList<String> postLoad = new ArrayList<String>();
 					ArrayList<Class<?>> classes = new ArrayList<Class<?>>();
 					while (e.hasMoreElements()) {
 						JarEntry je = (JarEntry) e.nextElement();
@@ -60,7 +62,11 @@ public class PluginManager {
 							}
 							continue;
 						}
-						String className = je.getName().substring(0, je.getName().length()-6);
+						String className = je.getName().substring(0, je.getName().length() - 6);
+						postLoad.add(className);
+					}
+					for(String className : postLoad){
+						log.d("Loading plugin class " + className);
 						className = className.replace('/', '.');
 						Class<?> c = cl.loadClass(className);
 						classes.add(c);
@@ -77,18 +83,18 @@ public class PluginManager {
 						}
 					}
 				}catch(IOException e){
-					log.e("Error while loading plugin - " + e.getMessage());
+					log.e("IOException while loading plugin - " + e.getMessage());
 				}catch(ClassNotFoundException e){
-					log.e("Error while loading plugin - " + e.getMessage());
+					log.e("ClassNotFoundException while loading plugin - " + e.getMessage());
 				}catch(InstantiationException e){
-					log.e("Error while loading plugin - " + e.getMessage());
+					log.e("InstantiationException while loading plugin - " + e.getMessage());
 				}catch(IllegalAccessException e){
-					log.e("Error while loading plugin - " + e.getMessage());
+					log.e("IllegalAccessException while loading plugin - " + e.getMessage());
 				}
 			}
 		}
 	}
-	
+
 	public void init(Server server){
 		for(IPlugin p : plugins)
 			p.init(server);
@@ -102,6 +108,12 @@ public class PluginManager {
 	public void preWrite(Server server, HttpExchange exchange, int status, String mime, byte[] data){
 		for(IPlugin p : plugins)
 			p.preWrite(server, exchange, status, mime, data);
+	}
+
+	public byte[] modifyBeforeSend(Server server, HttpExchange exchange, int status, String mime, byte[] data){
+		for(IPlugin p : plugins)
+			data = p.modifyBeforeSend(server, exchange, status, mime, data);
+		return data;
 	}
 
 	public void postWrite(Server server, HttpExchange exchange, int status,String mime, byte[] data){

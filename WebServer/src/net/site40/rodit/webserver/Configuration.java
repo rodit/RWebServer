@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 
@@ -46,14 +45,6 @@ public class Configuration {
 		write(key, value + "");
 	}
 	
-	public ArrayList<String> getValues(String root){
-		ArrayList<String> values = new ArrayList<String>();
-		for(String key : properties.keySet())
-			if(key.equals(root))
-				values.add(properties.get(key));
-		return values;
-	}
-	
 	public void writeDefaults(){
 		//server config
 		write("server.port", 1337);
@@ -64,6 +55,7 @@ public class Configuration {
 		write("server.permissions", true);
 		write("server.sessions", true);
 		write("server.sessions.ipcheck", true);
+		write("server.sessions.clear", true);
 		write("server.authentication", true);
 		write("server.https", false);
 		write("server.keystore", "keystore.jks");

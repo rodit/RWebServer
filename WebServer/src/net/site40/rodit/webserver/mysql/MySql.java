@@ -24,7 +24,7 @@ public class MySql {
 			}catch(ClassNotFoundException e){
 				log.e("Error while loading mysql driver.");
 				return;
-			} 
+			}
 			String url = "jdbc:mysql://" + address + "/" + database;
 			Properties props = new Properties();
 			props.setProperty("user", username);
@@ -51,7 +51,7 @@ public class MySql {
 			log.e("Error while closing mysql connection - " + e.getMessage());
 		}
 	}
-	
+
 	public PreparedStatement makeStatement(String sql, Object... values){
 		try{
 			PreparedStatement statement = connection.prepareStatement(sql);
@@ -82,7 +82,7 @@ public class MySql {
 		}
 		return null;
 	}
-	
+
 	public int queryUpdate(String sql, Object... values){
 		return queryUpdate(makeStatement(sql, values));
 	}

@@ -28,7 +28,7 @@ public class FileUtil {
 			byte[] buffer = new byte[fin.available()];
 			fin.read(buffer);
 			fin.close();
-			log.i("Read file " + file.getParent() + ".");
+			log.i("Read file " + file.getPath() + ".");
 			return buffer;
 		}catch(IOException e){
 			log.e("Error while reading file '" + file.getPath() + "' - " + e.getMessage());

@@ -228,6 +228,7 @@ public class Server implements HttpHandler{
 	public void writeFinal(HttpExchange exchange, int status, String mime, byte[] data){
 		try{
 			plugins.preWrite(this, exchange, status, mime, data);
+			data = plugins.modifyBeforeSend(this, exchange, status, mime, data);
 			exchange.getResponseHeaders().set("Content-Length", data.length + "");
 			exchange.getResponseHeaders().set("Content-Type", mime.startsWith("text/") ? mime + "; charset=utf-8" : mime);
 			if(exchange.getResponseCode() != 301)
